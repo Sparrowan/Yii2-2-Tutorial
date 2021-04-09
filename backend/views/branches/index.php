@@ -26,12 +26,38 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'companies.name',
-            'name',
-            'address',
-            'created_at',
-            //'status',
+            // 'id',
+            // 'companies.name',
+            // 'name',
+            // 'address',
+            // 'created_at',
+            // //'status',
+
+            [
+                'header' => 'Company Name',
+                'attribute' => 'companies_id',
+                'value' => 'companies.name',
+            ],
+            [
+                'header' => 'Name',
+                'attribute' => 'name',
+                'value' => 'name',
+            ],
+            [
+                'header' => 'Address',
+                'attribute' => 'address',
+                'value' => 'address',
+            ],
+            [
+                'header' => 'Created At',
+                'attribute' => 'created_at',
+                'value' => 'created_at',
+            ],
+            [
+                'header' => 'Status',
+                'attribute' => 'status',
+                'value' => 'status',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
