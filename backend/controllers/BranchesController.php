@@ -8,6 +8,9 @@ use backend\models\BranchesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use backend\models\Companies;
+
 
 /**
  * BranchesController implements the CRUD actions for Branches model.
@@ -65,7 +68,7 @@ class BranchesController extends Controller
     public function actionCreate()
     {
         $model = new Branches();
-
+        $companies = ArrayHelper::map(Companies::find()->all(),'id','name');
         if ($model->load(Yii::$app->request->post())) {
             $model->created_at= date('Y-m-d h:m:s');
             $model->save();
@@ -74,6 +77,7 @@ class BranchesController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'companies'=>$companies,
         ]);
     }
 
@@ -87,6 +91,8 @@ class BranchesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $companies = ArrayHelper::map(Companies::find()->all(),'id','name');
+        
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -94,6 +100,7 @@ class BranchesController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'companies'=>$companies,
         ]);
     }
 
