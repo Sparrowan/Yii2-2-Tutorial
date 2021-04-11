@@ -23,7 +23,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'address') ?>
 
-    <?= $form->field($model, 'created_at') ?>
+    <?= $form->field($model, 'start_date') ?>
+
+    <?php // echo $form->field($model, 'created_at') ?>
 
     <?php // echo $form->field($model, 'status') ?>
 
