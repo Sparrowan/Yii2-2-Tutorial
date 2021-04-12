@@ -48,6 +48,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                 ]),
             ],
+            [
+            'attribute'=>'logo',
+            'value'=>'logo',
+            ],
             'status',
             'created_at',
 

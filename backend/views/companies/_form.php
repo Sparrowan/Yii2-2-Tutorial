@@ -12,11 +12,13 @@ use kartik\select2\Select2;
 
 <div class="companies-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'logo_file')->fileInput(); ?>
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
