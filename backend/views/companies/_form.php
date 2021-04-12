@@ -28,11 +28,22 @@ use kartik\select2\Select2;
         // 'template' => '<div class="well well-sm" style="background-color: #fff; width:250px">{input}</div>',
         'clientOptions' => [
             'autoclose' => true,
-            'format' => 'yyyy-m-dd'
+            'format' => 'yyyy-m-dd',
+            'endDate'=> 'today',
         ]
 ]);?>
 
-    <?= $form->field($model, 'status')->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive', '' => '', ], ['prompt' => '']) ?>
+    <div class="form-group">
+<?=  $form->field($model, 'status')->widget(Select2::classname(), [
+    'data' => [ 'active' => 'Active', 'inactive' => 'Inactive', ],
+    'language' => 'de',
+    'options' => ['placeholder' => 'Select Status ...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); ?>
+
+</div>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
