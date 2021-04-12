@@ -8,6 +8,7 @@ use backend\models\CompaniesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\ForbiddenHttpException;
 use yii\web\UploadedFile;
 
 /**
@@ -65,6 +66,8 @@ class CompaniesController extends Controller
      */
     public function actionCreate()
     {
+
+        if (Yii::$app->user->can('create-company')){
         $model = new Companies();
 
         if ($model->load(Yii::$app->request->post())) {
@@ -84,6 +87,10 @@ class CompaniesController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+
+    }else{
+        throw new ForbiddenHttpException;
+    }
     }
 
     /**

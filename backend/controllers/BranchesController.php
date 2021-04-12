@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use backend\models\Companies;
+use yii\web\ForbiddenHttpException;
 
 
 /**
@@ -67,6 +68,8 @@ class BranchesController extends Controller
      */
     public function actionCreate()
     {
+        
+        if (Yii::$app->user->can('create-branch')){
         $model = new Branches();
         $companies = ArrayHelper::map(Companies::find()->all(),'id','name');
         if ($model->load(Yii::$app->request->post())) {
@@ -79,6 +82,10 @@ class BranchesController extends Controller
             'model' => $model,
             'companies'=>$companies,
         ]);
+
+    }else{
+        throw new ForbiddenHttpException;
+    }
     }
 
     /**
