@@ -5,6 +5,9 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use backend\models\Branches;
 use backend\models\Companies;
+use kartik\select2\Select2;
+use kartik\depdrop\DepDrop;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Departments */
@@ -19,15 +22,32 @@ use backend\models\Companies;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'companies_id')->dropDownList(
-        ArrayHelper::map(Companies::find()->all(),'id','name'),
-        ['prompt'=>'Select Company']
-    ) ?>
+    <?=  $form->field($model, 'companies_id')->widget(Select2::classname(), [
+    'data' => $companies,
+    'language' => 'de',
+    'options' => [
+        'placeholder' => 'Select a Company ...',
+    ],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); ?>
 
-    <?= $form->field($model, 'branches_id')->dropDownList(
-        ArrayHelper::map(Branches::find()->all(),'id','name'),
-        ['prompt'=>'Select Branch']
-    ) ?>
+
+
+<?=
+$form->field($model, 'branches_id')->widget(DepDrop::classname(), [
+    'data' => $branches,
+    'type' => DepDrop::TYPE_SELECT2,
+    'options'=>['id'=>'departments-branches_id'],
+    'pluginOptions'=>[
+        'depends'=>['departments-companies_id'],
+        'placeholder' => 'Select a Branch...',
+        'url'=>Url::to(['/departments/lists'])
+    ]
+]);
+
+?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

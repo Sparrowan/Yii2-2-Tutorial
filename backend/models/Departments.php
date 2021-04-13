@@ -68,6 +68,11 @@ class Departments extends \yii\db\ActiveRecord
         return $this->hasOne(Branches::className(), ['id' => 'branches_id']);
     }
 
+    public function getBranchesList($id){
+        $list = Branches::find()->where(['companies_id'=>$id])->all();
+        return $list;
+       }
+
     /**
      * Gets query for [[Companies]].
      *

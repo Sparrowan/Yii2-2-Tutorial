@@ -4,10 +4,13 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Departments;
+use backend\models\Companies;
+use backend\models\Branches;
 use backend\models\DepartmentsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * DepartmentsController implements the CRUD actions for Departments model.
@@ -65,6 +68,8 @@ class DepartmentsController extends Controller
     public function actionCreate()
     {
         $model = new Departments();
+        $companies = ArrayHelper::map(Companies::find()->all(),'id','name');
+        $branches = ArrayHelper::map(Branches::find()->all(),'id','name');
 
         if ($model->load(Yii::$app->request->post())) {
             $model->created_at= date('Y-m-d h:m:s');
@@ -74,6 +79,8 @@ class DepartmentsController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'companies'=>$companies,
+            'branches'=>$branches,
         ]);
     }
 
@@ -87,6 +94,8 @@ class DepartmentsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $companies = ArrayHelper::map(Companies::find()->all(),'id','name');
+        $branches = ArrayHelper::map(Branches::find()->all(),'id','name');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -94,6 +103,8 @@ class DepartmentsController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'companies'=>$companies,
+            'branches'=>$branches,
         ]);
     }
 
@@ -110,6 +121,31 @@ class DepartmentsController extends Controller
 
         return $this->redirect(['index']);
     }
+
+
+
+    public function actionLists() {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $companies_id = $parents[0];
+                $model  = new Departments();
+                $out = $model->getBranchesList($companies_id); 
+                // the getSubCatList function will query the database based on the
+                // companies_id and return an array like below:
+                // [
+                //    ['id'=>'<sub-cat-id-1>', 'name'=>'<sub-cat-name1>'],
+                //    ['id'=>'<sub-companies_id_2>', 'name'=>'<sub-cat-name2>']
+                // ]
+                return ['output'=>$out, 'selected'=>''];
+            }
+        }
+        
+        return ['output'=>'', 'selected'=>''];
+    }
+
 
     /**
      * Finds the Departments model based on its primary key value.
